@@ -40,9 +40,10 @@ function displayTasks() {
 }
 
 function addTask() {
-  // Prompt user for a new task
-  // Add task to tasks array
-  // Display all tasks to show changes
+ let description = prompt("Enter task description");
+  tasks.push(newTask(description));
+  tasksEl.innerHTML = `Task Added ${description}`;
+  displayAll();
 }
 
 function removeTask() {
@@ -53,4 +54,20 @@ function removeTask() {
 
 function clearAll() {
   // Clear all tasks
+}
+
+// Helper Functions
+// Return a new task object
+function newTask(taskDescription){
+  return{
+    description : taskDescription,
+    completed : ''
+  };
+}
+// Display all tasks in global tasks array
+function displayAll(){
+  let outputStr = ' ';
+  for(let i = 0; i < tasks.length; i++){
+    outputStr += getTasksHTMLStr(tasks[i]);
+  }
 }
