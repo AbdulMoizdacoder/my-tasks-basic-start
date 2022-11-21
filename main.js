@@ -12,11 +12,9 @@ let menuEl = document.getElementById("menu");
 let tasksEl = document.getElementById("tasks");
 
 // Global Variables
-let tasks = [
-  "Do the first thing",
-  "Do the second thing",
-  "oh yea, and the third thing",
-];
+let tasks = loadTasks();
+displayAll();
+
 displayTasks();
 
 // Go Btn - Menu Listener
@@ -42,7 +40,7 @@ function displayTasks() {
 function addTask() {
  let description = prompt("Enter task description");
   tasks.push(newTask(description));
-  tasksEl.innerHTML = `Task Added ${description}`;
+  saveTasks();
   displayAll();
 }
 
@@ -61,13 +59,33 @@ function clearAll() {
 function newTask(taskDescription){
   return{
     description : taskDescription,
-    completed : ''
+    completed : '',
   };
 }
 // Display all tasks in global tasks array
 function displayAll(){
   let outputStr = ' ';
   for(let i = 0; i < tasks.length; i++){
-    outputStr += getTasksHTMLStr(tasks[i]);
+    outputStr += getTaskHTMLStr(tasks[i],i);
   }
+  tasksEl.innerHTML = outputStr;
+}
+
+// Get html for given task
+function getTaskHTMLStr(task, i){
+  return `
+  <div>
+  ${i}: ${task.description}
+  </div>
+  `;
+}
+
+function saveTasks(){
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+// Load tasks from local storage
+function loadTasks(){
+  let tasksStr = localStorage.getItem('tasks');
+  return JSON.parse(tasksStr) ?? [];
 }
