@@ -7,31 +7,21 @@
 // Add localStorage to make the data persistent (I can help with this)
 
 // HTML Elements
-let goBtnEl = document.getElementById("go-btn");
+let taskInputEl = document.getElementById("task-input");
 let menuEl = document.getElementById("menu");
 let tasksEl = document.getElementById("tasks");
 
 // Global Variables
-let tasks = loadTasks();
-displayAll();
-
+let tasks = initTasks();
 displayTasks();
 
 // Go Btn - Menu Listener
-goBtnEl.addEventListener("click", goBtnHandler);
+taskInputEl.addEventListener("keydown", taskSubmitHandler);
 
-function goBtnHandler() {
-  // Get Menu Selection
-  let selection = menuEl.value;
-
-  if (selection === "add") {
-    addTask();
-  } else if (selection === 'toggle'){
-    toggleTask();
-  } else if(selection === "remove") {
-    removeTask();
-  } else if (selection === "clear") {
-    clearAll();
+function taskSubmitHandler(e) {
+  console.log(e.code)
+ if(e.code === "Enter"){
+  addTask();
   }
 }
 
@@ -110,7 +100,7 @@ function saveTasks(){
 }
 
 // Load tasks from local storage
-function loadTasks(){
+function initTasks(){
   let tasksStr = localStorage.getItem('tasks');
   return JSON.parse(tasksStr) ?? [];
 }
