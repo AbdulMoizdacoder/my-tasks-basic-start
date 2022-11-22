@@ -26,7 +26,9 @@ function goBtnHandler() {
 
   if (selection === "add") {
     addTask();
-  } else if (selection === "remove") {
+  } else if (selection === 'toggle'){
+    toggleTask();
+  } else if(selection === "remove") {
     removeTask();
   } else if (selection === "clear") {
     clearAll();
@@ -44,14 +46,37 @@ function addTask() {
   displayAll();
 }
 
+// Toggle completed status of a task
+function toggleTask(){
+  let index = +prompt('Enter # of task:');
+  let task = tasks[index];
+  if(task.completed === ''){
+    task.completed = 'completed';
+  } else{
+    task.completed = ' ';
+  }
+  saveTasks();
+  displayAll();
+}
+
 function removeTask() {
-  // Prompt user for task to remove
-  // Remove task from task array (if it exists)
-  // Display all tasks to show changes
+  // Remove a task
+  let index = +prompt("Enter# of task:");
+  if(index >= 0 && index < tasks.length){
+    // Valid Index -> Remove
+    tasks.splice(index,1)
+    saveTasks();
+    displayAll();
+  }else{
+    alert("Invalid Task #")
+  }
 }
 
 function clearAll() {
   // Clear all tasks
+  tasks = [];
+  saveTasks();
+  displayAll();
 }
 
 // Helper Functions
@@ -74,7 +99,7 @@ function displayAll(){
 // Get html for given task
 function getTaskHTMLStr(task, i){
   return `
-  <div>
+  <div class ="${task.completed}">
   ${i}: ${task.description}
   </div>
   `;
