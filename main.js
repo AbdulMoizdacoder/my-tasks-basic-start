@@ -51,7 +51,7 @@ function toggleTask(){
 
 function removeTask() {
   // Remove a task
-  let index = +prompt("Enter# of task:");
+  let index = +prompt("Enter # of task:");
   if(index >= 0 && index < tasks.length){
     // Valid Index -> Remove
     tasks.splice(index,1)
