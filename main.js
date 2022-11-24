@@ -13,7 +13,6 @@ let tasksEl = document.getElementById("tasks");
 
 // Global Variables
 let tasks = initTasks();
-displayTasks();
 
 // Go Btn - Menu Listener
 taskInputEl.addEventListener("keydown", taskSubmitHandler);
@@ -21,21 +20,16 @@ taskInputEl.addEventListener("keydown", taskSubmitHandler);
 function taskSubmitHandler(e) {
   console.log(e.code)
  if(e.code === "Enter"){
-  addTask();
+  // Add Submitted Task
+  let userTask = taskInputEl.value;
+  tasks.push(newTask(userTask));
+  saveTasks();
+  displayAll();
+  taskInputEl.value = "";
   }
 }
 
-function displayTasks() {
-  // Diplay all tasks by putting them in the 'tasksEl' <div>
-}
-
-function addTask() {
- let description = prompt("Enter task description");
-  tasks.push(newTask(description));
-  saveTasks();
-  displayAll();
-}
-
+ 
 // Toggle completed status of a task
 function toggleTask(){
   let index = +prompt('Enter # of task:');
@@ -87,10 +81,27 @@ function displayAll(){
 }
 
 // Get html for given task
-function getTaskHTMLStr(task, i){
+function getTaskHTMLStr(task, index){
+  // Use javascript to build the Task <div>
+ 
+  // Check Box Element
+  let checkBoxEl = document.createElement("input");
+  checkBoxEl.type = "checkbox";
+  // Task Descritption Text Node
+  let textEl = document.createTextNode(task.description);
+
+  let buttonEl = document.createElement("button");
+  buttonEl.innerHTML = "Remove"
+
+  let divEl = document.createElement("div");
+  divEl.appendChild(checkBoxEl);
+
+  console.log(divEl);
   return `
-  <div class ="${task.completed}">
-  ${i}: ${task.description}
+  <div>
+  <input type = "checkbox">
+  ${task.description}
+  <button>Remove</button>
   </div>
   `;
 }
