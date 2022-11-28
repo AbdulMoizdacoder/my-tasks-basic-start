@@ -28,12 +28,15 @@ body {
   padding: 10px;
 }
 
-button{
-  float:right;
+button {
+  float: right;
   background-color: red;
   color:white;
-  border: none;
   padding: 2px 5px;
   border-radius: 5px;
   border-color: white;
+}
+
+input[type = "checkBox"]{
+  margin-right: 10px;
 }

@@ -32,19 +32,22 @@ function taskSubmitHandler(e) {
 
 //  Menu functions
 function toggleTask(){
-  let index = +prompt('Enter # of task:');
-  let task = tasks[index];
-  if(task.completed === ''){
-    task.completed = 'completed';
+  let taskIndex = +prompt("Please enter number of task to toggle");
+  let task = tasks[taskIndex];
+  if(task.completed === ""){
+    task.completed = "completed";
   } else{
-    task.completed = " ";
+    task.completed = "";
   }
   saveTasks();
   displayAll();
 }
 
 function removeTask() {
-let taskIndex = +prompt;
+let taskIndex = +prompt("Please enter number tasks to remove:");
+tasks.splice(taskIndex, 1);
+saveTasks();
+displayAll();
 }
 
 function clearAll() {
@@ -55,86 +58,69 @@ function clearAll() {
 }
 
 // Helper Functions
-function initTasks(){
-  let tasksStr = localStorage.getItem('tasks');
-  return JSON.parse(tasksStr) ?? [];
-}
-
-function displayAll(){
-  let outputStr = ' ';
-  for(let i = 0; i < tasks.length; i++){
-    outputStr += getTaskHTMLStr(tasks[i],i);
+  function initTasks(){
+    let tasksStr = localStorage.getItem('tasks');
+    return JSON.parse(tasksStr) ?? [];
   }
-  tasksEl.innerHTML = outputStr;
-}
 
-function newTask(taskDescription){
-  return{
-    description : taskDescription,
-    completed : false, 
-  };
-}
+  function displayAll(){
+    for(let i = 0; i < tasks.length; i++){
+      tasksEl.appendChild(getTaskHTML(tasks[i],i));
+    }
+  }
 
-function saveTasks(){
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-}
+  function newTask(taskDescription){
+    return{
+      description : taskDescription,
+      completed : "", 
+    };
+  }
 
-function getTaskHTMLStr(task, index){
+  function saveTasks(){
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+
+
+function getTaskHTML(task, index){
   // Use javascript to build the Task <div>
  
   // Check Box Element
   let checkBoxEl = document.createElement("input");
   checkBoxEl.type = "checkbox";
-  checkBoxEl.dataset.index = index;
-  checkBoxEl.checked = task.completed;
   checkBoxEl.addEventListener("input", checkBoxHandler);
+  // Task Description Text Node
+  let textEl = document.createTextNode(task.description);
 
-
-  // Task Descritption Text Node
-  let textSpanEl = document.createElement("span");
-  textSpanEl.innerHTML = task.description;
-  if (task.completed){
-  textSpanEl.className = "completed";
-  }
   // Remove Button
   let buttonEl = document.createElement("button");
   buttonEl.innerHTML = "Remove";
-  buttonEl.dataset.index = index;
   buttonEl.addEventListener("click", removeBtnHandler);
+
 
   // Add everything to a div element
   let divEl = document.createElement("div");
   divEl.appendChild(checkBoxEl);
-  divEl.appendChild(textSpanEl);
+  divEl.appendChild(textEl);
   divEl.appendChild(buttonEl);
 
-  // return divEl;
-  
-  return `
-  <div>
-  <input type = "checkbox">
-  ${task.description}
-  <button>Remove</button>
-  </div>
-  `;
+  return divEl;
 }
 
  
 
 // Event functions
 function checkBoxHandler(e){
-// Get index of tasks to toggle
-let taskIndex = +e.target.dataset.index;
-let task = tasks[taskIndex];
-task.completed = !task.completed;
-saveTasks();
-displayAll();
+  // Get index of tasks to toggle
+  let taskIndex = +e.target.dataset.index;
+  let task = tasks[taskIndex];
+  task.completed = !task.completed;
+  saveTasks();
+  displayAll();
 }
-
 function removeBtnHandler(e){
   // Get index of task to remove
   let taskIndex = +e.target.dataset.index;
-  tasks.splice(taskindex,1);
+  tasks.splice(taskIndex,1);
   saveTasks();
   displayAll();
 }
