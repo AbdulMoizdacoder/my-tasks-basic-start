@@ -64,6 +64,7 @@ function clearAll() {
   }
 
   function displayAll(){
+    tasksEl.innerHTML = ""
     for(let i = 0; i < tasks.length; i++){
       tasksEl.appendChild(getTaskHTML(tasks[i],i));
     }
@@ -72,7 +73,7 @@ function clearAll() {
   function newTask(taskDescription){
     return{
       description : taskDescription,
-      completed : "", 
+      completed : false, 
     };
   }
 
@@ -87,20 +88,28 @@ function getTaskHTML(task, index){
   // Check Box Element
   let checkBoxEl = document.createElement("input");
   checkBoxEl.type = "checkbox";
+  checkBoxEl.dataset.index = index;
+  checkBoxEl.checked = task.completed;
   checkBoxEl.addEventListener("input", checkBoxHandler);
+  
   // Task Description Text Node
-  let textEl = document.createTextNode(task.description);
+  let textSpanEl = document.createElement("span");
+  textSpanEl.innerHTML = task.description;
+  if (task.completed){
+      textSpanEl.className = "completed";
+    }
 
   // Remove Button
   let buttonEl = document.createElement("button");
   buttonEl.innerHTML = "Remove";
+  buttonEl.dataset.index = index;
   buttonEl.addEventListener("click", removeBtnHandler);
 
 
   // Add everything to a div element
   let divEl = document.createElement("div");
   divEl.appendChild(checkBoxEl);
-  divEl.appendChild(textEl);
+  divEl.appendChild(textSpanEl);
   divEl.appendChild(buttonEl);
 
   return divEl;
